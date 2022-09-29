@@ -1,143 +1,100 @@
 #include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
 #include<unistd.h>
-void newline(int number){
-    for(int i = 0; i < number; i++){
-        printf("\n");
+#include<stdlib.h>
+/*
+
+        XXXX
+    XXXX    XXXX
+XXXX            XXXX
+    XXXX    XXXX
+        XXXX
+
+
+            1xXX
+        12XX    2XXX
+    11XX            3XXX     
+10XX                    4XXX 
+    9XXX            5XXX     
+        8XXX    6XXX         
+            7XXX             
+
+
+*/
+
+void genSpaceArr(int wLen, int sqLen, int* spaceArr){
+    int start = (sqLen - 1) * wLen;
+    int len = (4 * sqLen) - 4;
+    int accend = 1; //accending is 1
+    int max = (2*sqLen - 2) * wLen;
+    //printf("MAX %d\n",max);
+    *spaceArr = start;
+
+    for (int i = 1; i < len; i++){
+        if (accend){
+            start += wLen;
+            *(spaceArr + i) = start;
+            if (start == max){
+                accend = 0;
+            }
+        }else{
+            start -= wLen;
+            *(spaceArr + i) = start;
+            if (start == 0){
+                accend = 1;
+            }
+        }
     }
 }
-void space(int number){
-    for(int i = 0; i < number; i++){
+
+void space(int num){
+    for (int i = 0; i < num; i++){
         printf(" ");
     }
 }
+
+void printCircle(char*words[], int spaceArr[], int sqLen){
+    int max = 4*sqLen - 4;
+    int min = 1;
+    space(spaceArr[0]);
+    printf("%s\n",words[0]);
+    //printf("here%d",spaceArr[max-1]);
+
+    for (int i = 0; i < sqLen+1; i++){
+        space(spaceArr[max-1]);
+        printf("%s",words[max-1]);
+        space((spaceArr[min] - spaceArr[max-1] - 4));
+        printf("%s\n",words[min]);
+        min++;
+        max--;
+    }
+    space(spaceArr[min]);
+    printf("%s\n",words[min]);
+}
+
+void shuffle(char* words[], int len){
+    char* wordBuff[len];
+    for (int i = 0; i < len; i++){
+        wordBuff[i] = words[i];
+    }
+    words[0] = wordBuff[len-1];
+    
+    for (int i = 0; i < len-1; i++){
+        words[i + 1] = wordBuff[i];
+    }
+}
+
 void clear(){
     system("clear");
 }
-int circle(const char word1[],const char word2[],const char word3[],const char word4[],const char word5[],const char word6[],const char word7[],const char word8[]){
-    const char *corners[8];
-    corners[0] = word1;
-    corners[1] = word2;
-    corners[2] = word3;
-    corners[3] = word4;
-    corners[4] = word5;
-    corners[5] = word6;
-    corners[6] = word7;
-    corners[7] = word8;
-    //Printing circle
-    space(11);
-    printf("%s", corners[0]);
-    newline(2);
-    space(4);
-    printf("%s", corners[7]);
-    space(10);
-    printf("%s", corners[1]);
-    newline(3);
-    printf("%s", corners[6]);
-    space(19);
-    printf("%s", corners[2]);
-    newline(3);
-    space(4);
-    printf("%s", corners[5]);
-    space(10);
-    printf("%s", corners[3]);
-    newline(2);
-    space(11);
-    printf("%s", corners[4]);
-    newline(1);
-    sleep(0.999999999999999960);
-    clear();
-}
-int box(const char word1[],const char word2[],const char word3[],const char word4[]){
-    // Create box
-    // Make spin
-    const char *corners[4];
-    corners[0] = word1;
-    corners[1] = word2;
-    corners[2] = word3;
-    corners[3] = word4;
-    int space1 = 21 - (sizeof(corners[0]) + sizeof(corners[1]));
-    int space2 = 21 - (sizeof(corners[2]) + sizeof(corners[3]));
-    printf("%s",corners[0]);
-    space(space1);
-    printf("%s",corners[1]);
-    newline(4);
-    printf("%s",corners[3]);
-    space(space2);
-    printf("%s",corners[2]);
-    newline(1);
-    /*            thin
-     *
-     *     thin          othe
-     *
-     * over                    over
-     *
-     *      Thin         othe
-     *
-     *           under
-     */
-    //word 1.size*2 + word1.size*2
-    //first line
-    //newline
-    sleep(0.99999999999999989999);
-    clear();
-}
-void square_driver(){
-    const char *a[4];
-    a[0] = "one";
-    a[1] = "two";
-    a[2] = "three";
-    a[3] = "four";
-    int counter =0;
-    while(1){
-        if(counter > 2){
-            counter = 0;
-        }
-        else{
-            counter++;
-        }
-        int things[]= {0,1,2,3};
-        for(int i = 0; i < 4; i ++){
-            things[i] -= counter;
-            if(things[i] < 0){
-                things[i] += 4;
-            }
-        }
-        box(a[things[0]],a[things[1]],a[things[2]],a[things[3]]);
 
-    }
-
-}
-void circle_driver(){
-    const char *a[8];
-    a[0] = "XXXX";
-    a[1] = "XXXX";
-    a[2] = "XXXX";
-    a[3] = "THIS";
-    a[4] = "XXXX";
-    a[5] = "XXXX";
-    a[6] = "XXXX";
-    a[7] = "Fuck";
-    int counter = 0;
-    while(1){
-        if(counter > 6){
-            counter = 0;
-        }
-        else{
-            counter++;
-        }
-        int things[]= {0,1,2,3,4,5,6,7};
-        for(int i = 0; i < 8; i ++){
-            things[i] -= counter;
-            if(things[i] < 0){
-                things[i] += 8;
-            }
-        }
-        circle(a[things[0]],a[things[1]],a[things[2]],a[things[3]],a[things[4]],a[things[5]],a[things[6]],a[things[7]]);
-
-    }
-}
 int main(){
-    circle_driver();
+    char* words[12] = {"This", "XXXX","XXXX","XXXX","XXXX","XXXX","FUCK","XXXX","XXXX","XXXX","XXXX","XXXX"};
+    int spaceArr[12];
+    genSpaceArr(4,4,&spaceArr[0]);
+    while (1){
+        printCircle(words,spaceArr,4);
+        shuffle(words,12);
+        sleep(1.0);
+		clear();
+    }
 }
